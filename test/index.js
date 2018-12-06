@@ -1,7 +1,12 @@
 const express = require('express')
 const alphapolls = require('../lib')
 
-var app = express()
-app = alphapolls.applyMiddleware(app, '/api')
+// explicitly create express app
+const app = express()
+const serverA = alphapolls.applyMiddleware(app, '/some-optional-custom-path')
 
-app.listen(3030)
+// implicitly create express app
+const serverB = alphapolls.createServer()
+
+serverA.listen(3040)
+serverB.listen(3050)
