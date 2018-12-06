@@ -1,0 +1,31 @@
+{
+  "name": "alphapolls",
+  "version": "1.0.0",
+  "description": "polling api",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/umran/alphapolls.git"
+  },
+  "keywords": [
+    "polling",
+    "api"
+  ],
+  "author": "Ahmed Umran Hussain",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/umran/alphapolls/issues"
+  },
+  "homepage": "https://github.com/umran/alphapolls#readme",
+  "dependencies": {
+    "apollo-server-express": "^2.2.6",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "graphql": "^14.0.2",
+    "mongoose": "^5.3.14"
+  }
+}
