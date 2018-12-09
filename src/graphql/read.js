@@ -1,6 +1,5 @@
-const database = require('../database')
+const read = require('../database').read
 const constants = require('../constants')
-const mongoose = require('mongoose')
 
 const prepare = response => {
   response.date_created = response.date_created.toISOString()
@@ -46,13 +45,11 @@ const formatArgs = args => {
   }, { primary: {}, secondary: {} })
 }
 
-Object.keys(database).forEach(key => {
-  let prepared = async args => {
+Object.keys(read).forEach(key => {
+  exports[key] = async args => {
     const formattedArgs = formatArgs(args)
     console.log('this is the endpoint', key)
     console.log('these are the formatted args', formattedArgs)
-    return prepare(await database[key](formattedArgs))
+    return prepare(await read[key](formattedArgs))
   }
-
-  exports[key] = prepared
 })
