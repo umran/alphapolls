@@ -45,8 +45,6 @@ Object.keys(create).forEach(method => {
       }
     }
 
-    console.log(context)
-
     if (context.clearance !== 'admin') {
       limitAccess(method)
     }
