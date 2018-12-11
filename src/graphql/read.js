@@ -3,8 +3,8 @@ const constants = require('../constants')
 
 const prepare = responses => {
   return responses.map(response => {
-    response.date_created = response.date_created.toISOString()
-    response.date_modified = response.date_modified.toISOString()
+    //response.date_created = response.date_created.toISOString()
+    //response.date_modified = response.date_modified.toISOString()
 
     constants.objectIds.forEach(key => {
       console.log(key)
@@ -14,13 +14,10 @@ const prepare = responses => {
             return item.toString()
           })
         } else {
-          console.log('converting to string', key)
           response[key] = response[key].toString()
         }
       }
     })
-
-    response._id = response._id.toString()
 
     return response
   })
