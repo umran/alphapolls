@@ -14,6 +14,7 @@ const prepare = responses => {
             return item.toString()
           })
         } else {
+          console.log('converting to string', key)
           response[key] = response[key].toString()
         }
       }
