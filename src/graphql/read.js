@@ -20,6 +20,14 @@ const prepare = response => {
   return response
 }
 
+const redact = (method, response) => {
+  if (method === 'survey_instance' && response.user) {
+    response.user = null
+  }
+
+  return response
+}
+
 const formatArray = (value) => {
   let out
   if (Array.isArray(value)) {
@@ -46,10 +54,13 @@ const formatArgs = args => {
 }
 
 Object.keys(read).forEach(key => {
-  exports[key] = async args => {
+  exports[key] = async (args, context) => {
     const formattedArgs = formatArgs(args)
-    console.log('this is the endpoint', key)
-    console.log('these are the formatted args', formattedArgs)
+
+    if (context.clearance !== 'admin') {
+      return redact(key, prepare(await read[key](formattedArgs)))
+    }
+
     return prepare(await read[key](formattedArgs))
   }
 })

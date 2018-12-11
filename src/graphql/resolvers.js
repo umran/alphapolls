@@ -4,134 +4,146 @@ const update = require('./update')
 
 module.exports = {
   Query: {
-    response: async (root, args) => {
-      return await read.response(args)
+    user: async (root, args, context) => {
+      return await read.response(args, context)
     },
-    survey_instance: async (root, args) => {
-      return await read.survey_instance(args)
+    response: async (root, args, context) => {
+      return await read.response(args, context)
     },
-    survey: async (root, args) => {
-      return await read.survey(args)
+    survey_instance: async (root, args, context) => {
+      return await read.survey_instance(args, context)
     },
-    media: async (root, args) => {
-      return await read.media(args)
+    survey: async (root, args, context) => {
+      return await read.survey(args, context)
     },
-    source: async (root, args) => {
-      return await read.source(args)
+    media: async (root, args, context) => {
+      return await read.media(args, context)
     },
-    answer: async (root, args) => {
-      return await read.answer(args)
+    source: async (root, args, context) => {
+      return await read.source(args, context)
     },
-    question: async (root, args) => {
-      return await read.question(args)
+    answer: async (root, args, context) => {
+      return await read.answer(args, context)
+    },
+    question: async (root, args, context) => {
+      return await read.question(args, context)
+    }
+  },
+
+  User: {
+    survey_instance: async (original, args={}, context) => {
+      return await read.survey_instance({ ...args, _id: { $in: original.survey_instance } }, context)
     }
   },
 
   Response: {
-    survey_instance: async (original, args={}) => {
-      return await read.survey_instance({ ...args, _id: original.survey_instance })
+    survey_instance: async (original, args={}, context) => {
+      return await read.survey_instance({ ...args, _id: original.survey_instance }, context)
     },
-    answer: async (original, args={}) => {
-      return await read.answer({ ...args, _id: { $in: original.answer } })
+    answer: async (original, args={}, context) => {
+      return await read.answer({ ...args, _id: { $in: original.answer } }, context)
     }
   },
 
   SurveyInstance: {
-    survey: async (original, args={}) => {
-      return await read.survey({ ...args, _id: original.survey })
+    survey: async (original, args={}, context) => {
+      return await read.survey({ ...args, _id: original.survey }, context)
     },
-    response: async (original, args={}) => {
-      return await read.response({ ...args, _id: { $in: original.response } })
+    response: async (original, args={}, context) => {
+      return await read.response({ ...args, _id: { $in: original.response } }, context)
+    },
+    user: async (original, args={}, context) => {
+      return await read.user({ ...args, _id: { $in: original.user } }, context)
     }
   },
 
   Survey: {
-    media: async (original, args={}) => {
-      return await read.media({ ...args, _id: { $in: original.media } })
+    media: async (original, args={}, context) => {
+      return await read.media({ ...args, _id: { $in: original.media } }, context)
     },
-    question: async (original, args={}) => {
-      return await read.question({ ...args, _id: { $in: original.question } })
+    question: async (original, args={}, context) => {
+      return await read.question({ ...args, _id: { $in: original.question } }, context)
     },
-    survey_instance: async (original, args={}) => {
-      return await read.survey_instance({ ...args, _id: { $in: original.survey_instance } })
+    survey_instance: async (original, args={}, context) => {
+      return await read.survey_instance({ ...args, _id: { $in: original.survey_instance } }, context)
     }
   },
 
   Media: {
-    source: async (original, args={}) => {
-      return await read.source({ ...args, _id: original.source })
+    source: async (original, args={}, context) => {
+      return await read.source({ ...args, _id: original.source }, context)
     },
-    survey: async (original, args={}) => {
-      return await read.survey({ ...args, _id: { $in: original.survey } })
+    survey: async (original, args={}, context) => {
+      return await read.survey({ ...args, _id: { $in: original.survey } }, context)
     }
   },
 
   Source: {
-    media: async (original, args={}) => {
-      return await read.media({ ...args, _id: { $in: original.media } })
+    media: async (original, args={}, context) => {
+      return await read.media({ ...args, _id: { $in: original.media } }, context)
     }
   },
 
   Answer: {
-    question: async (original, args={}) => {
-      return await read.source({ ...args, _id: original.question })
+    question: async (original, args={}, context) => {
+      return await read.source({ ...args, _id: original.question }, context)
     },
-    response: async (original, args={}) => {
-      return await read.response({ ...args, _id: original.response })
+    response: async (original, args={}, context) => {
+      return await read.response({ ...args, _id: original.response }, context)
     }
   },
 
   Question: {
-    answer: async (original, args={}) => {
-      return await read.answer({ ...args, _id: { $in: original.answer } })
+    answer: async (original, args={}, context) => {
+      return await read.answer({ ...args, _id: { $in: original.answer } }, context)
     },
-    survey: async (original, args={}) => {
-      return await read.survey({ ...args, _id: { $in: original.survey } })
+    survey: async (original, args={}, context) => {
+      return await read.survey({ ...args, _id: { $in: original.survey } }, context)
     }
   },
 
   Mutation: {
-    create_response: async (root, args) => {
-      return await create.response(args)
+    create_response: async (root, args, context) => {
+      return await create.response(args, context)
     },
-    create_survey_instance: async (root, args) => {
-      return await create.survey_instance(args)
+    create_survey_instance: async (root, args, context) => {
+      return await create.survey_instance(args, context)
     },
-    create_survey: async (root, args) => {
-      return await create.survey(args)
+    create_survey: async (root, args, context) => {
+      return await create.survey(args, context)
     },
-    create_media: async (root, args) => {
-      return await create.media(args)
+    create_media: async (root, args, context) => {
+      return await create.media(args, context)
     },
-    create_source: async (root, args) => {
-      return await create.source(args)
+    create_source: async (root, args, context) => {
+      return await create.source(args, context)
     },
-    create_answer: async (root, args) => {
-      return await create.answer(args)
+    create_answer: async (root, args, context) => {
+      return await create.answer(args, context)
     },
-    create_question: async (root, args) => {
-      return await create.question(args)
+    create_question: async (root, args, context) => {
+      return await create.question(args, context)
     },
-    update_response: async (root, args) => {
-      return await update.response(args)
+    update_response: async (root, args, context) => {
+      return await update.response(args, context)
     },
-    update_survey_instance: async (root, args) => {
-      return await update.survey_instance(args)
+    update_survey_instance: async (root, args, context) => {
+      return await update.survey_instance(args, context)
     },
-    update_survey: async (root, args) => {
-      return await update.survey(args)
+    update_survey: async (root, args, context) => {
+      return await update.survey(args, context)
     },
-    update_media: async (root, args) => {
-      return await update.media(args)
+    update_media: async (root, args, context) => {
+      return await update.media(args, context)
     },
-    update_source: async (root, args) => {
-      return await update.source(args)
+    update_source: async (root, args, context) => {
+      return await update.source(args, context)
     },
-    update_answer: async (root, args) => {
-      return await update.answer(args)
+    update_answer: async (root, args, context) => {
+      return await update.answer(args, context)
     },
-    update_question: async (root, args) => {
-      return await update.question(args)
+    update_question: async (root, args, context) => {
+      return await update.question(args, context)
     }
   }
 }

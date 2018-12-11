@@ -1,11 +1,34 @@
 const express = require('express')
 const alphapolls = require('../lib')
 
-// explicitly create express app
-const app = express()
-const serverA = alphapolls.applyMiddleware(app, '/some-optional-custom-endpoint')
-serverA.listen(3040)
+const setContext = req => {
+  if (!req.session) {
+    throw new Error('a session has not been set')
+  }
 
-// implicitly create express app
-const serverB = alphapolls.createServer()
-serverB.listen(3050)
+  if (!req.session.clearance || !req.session.user) {
+    throw new Error('session is invalid')
+  }
+
+  return {
+    clearance: req.session.clearance,
+    user: req.session.user
+  }
+}
+
+// create express app
+const app = express()
+
+
+// mock auth middleware
+app.use('/some-optional-custom-endpoint', (req, res, next) => {
+  req.session = {
+    clearance: 'admin',
+    user: 'admin'
+  }
+
+  next()
+})
+
+const server = alphapolls.applyMiddleware(app, setContext, '/some-optional-custom-endpoint')
+server.listen(3040)

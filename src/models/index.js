@@ -63,7 +63,8 @@ exports.SurveyInstance = mongoose.model('SurveyInstance', Schema({
   date_created: { type: Date, required: true, default: new Date() },
   date_modified: { type: Date, required: true, default: new Date() },
   // associations
-  response: [{ type: Schema.Types.ObjectId, ref: 'Response' }]
+  response: [{ type: Schema.Types.ObjectId, ref: 'Response' }],
+  user: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 }))
 
 exports.Response = mongoose.model('Response', Schema({
@@ -71,4 +72,15 @@ exports.Response = mongoose.model('Response', Schema({
   answer: [{ type: Schema.Types.ObjectId, ref: 'Answer', required: true }],
   date_created: { type: Date, required: true, default: new Date() },
   date_modified: { type: Date, required: true, default: new Date() }
+}))
+
+// access control
+
+exports.User = mongoose.model('User', Schema({
+  auth_provider: { type: String, enum: ['Twitter'], required: true },
+  auth_token: { type: String, required: true },
+  date_created: { type: Date, required: true, default: new Date() },
+  date_modified: { type: Date, required: true, default: new Date() },
+  // associations
+  survey_instance: [{ type: Schema.Types.ObjectId, ref: 'SurveyInstance' }]
 }))

@@ -8,29 +8,40 @@ npm install alphapolls
 ```
 
 ## Setup
+The instance of ApolloServer exposed by alphapolls must be plugged-in to an existing express app under a custom endpoint through the applyMiddleware method.
 
-### As express middleware
+### Setting the Context
+In order to setup the API server a function must be provided that takes an express request object and returns a GraphQL context object. The request object should have a user property and clearance property already set by an authentication middleware.
 
-The instance of ApolloServer exposed by alphapolls can be plugged-in to an existing express app under a custom endpoint through the applyMiddleware method
+The clearance property of the context object must be set to one of 'admin' or 'user'. The user property of the context object, if the clearance property is set to user, must be set to the \_id of the authenticated user as in the User model. If the clearance property is set to 'admin', the user property may be set to anything.
+
+```javascript
+const setContext = (req) => {
+  if (!req.session) {
+    throw new Error('a session must be set')
+  }
+
+  if (!req.session.clearance || !req.session.user) {
+    throw new Error('a valid session object must be provided')
+  }
+
+  return {
+    clearance: req.session.clearance,
+    user: req.session.user
+  }
+}
+```
+
+### Applying the Middleware
+Once a setContext function has been declared as above, we may proceed to apply the alphapolls server as a middleware to an express app.
 
 ```javascript
 const express = require('express')
 const alphapolls = require('alphapolls')
 
 const app = express()
-const serverA = alphapolls.applyMiddleware(app, '/some-optional-custom-endpoint')
-serverA.listen(3040)
-```
-
-### As a standalone service
-
-It also works out of the box as a standalone server through the createServer method
-
-```javascript
-const alphapolls = require('alphapolls')
-
-const serverB = alphapolls.createServer()
-serverB.listen(3040)
+const server = alphapolls.applyMiddleware(app, setContext, '/some-optional-custom-endpoint')
+server.listen(3040)
 ```
 
 ## Usage

@@ -2,8 +2,16 @@ const update = require('../database').update
 const constants = require('../constants')
 const mongoose = require('mongoose')
 
+const limitAccess = (method, response) => {
+  if (constants.adminMethods.indexOf(method)) {
+    throw new Error('insufficient privileges to perform action')
+  }
+
+  return response
+}
+
 Object.keys(update).forEach(method => {
-  exports[method] = async args => {
+  exports[method] = async (args, context) => {
     if (method === 'question' && args.input_type && args.input_type === 'Number') {
       if (args.choice) {
         args.choice = args.choice.map(choice => Number(choice))
@@ -28,7 +36,7 @@ Object.keys(update).forEach(method => {
       return agg
     }, {})
 
-    return await update[method](formattedArgs, args._id)
+    return limitAccess(method, await update[method](formattedArgs, args._id))
 
   }
 })

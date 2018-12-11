@@ -1,5 +1,9 @@
 const models = require('../models')
 
+exports.user = async args => {
+  return await models.User.find(args.primary)
+}
+
 exports.response = async args => {
   return await models.Response.find(args.primary)
 }
