@@ -38,7 +38,7 @@ Object.keys(update).forEach(method => {
       return agg
     }, {})
 
-    limitAccess(clearance)
+    limitAccess(context.clearance)
 
     return prepare(await update[method](formattedArgs, args._id))
   }

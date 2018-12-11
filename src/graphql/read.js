@@ -5,19 +5,19 @@ const prepare = responses => {
   return responses.map(response => {
     response.date_created = response.date_created.toISOString()
     response.date_modified = response.date_modified.toISOString()
+    response._id = response._id.toString()
 
-    constants.objectIds.forEach(key => {
-      console.log(key)
-      if (response[key]) {
-        if (Array.isArray(response[key])) {
-          response[key] = response[key].map(item => {
-            return item.toString()
-          })
-        } else {
-          response[key] = response[key].toString()
-        }
-      }
-    })
+    if (response.start_date) {
+      response.start_date = response.start_date.toISOString()
+    }
+
+    if (response.end_date) {
+      response.start_date = response.end_date.toISOString()
+    }
+
+    if (response.value) {
+      response.value = response.value.toString()
+    }
 
     return response
   })
@@ -66,14 +66,10 @@ Object.keys(read).forEach(key => {
   exports[key] = async (args, context) => {
     const formattedArgs = formatArgs(args)
 
-    let raw
     if (context.clearance !== 'admin') {
-      raw = await read[key](formattedArgs)
-      return redact(key, prepare(raw))
+      return redact(key, prepare(await read[key](formattedArgs)))
     }
 
-    raw = await read[key](formattedArgs)
-
-    return prepare(raw)
+    return prepare(await read[key](formattedArgs))
   }
 })

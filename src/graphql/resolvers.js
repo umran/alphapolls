@@ -14,7 +14,9 @@ module.exports = {
       return await read.survey_instance(args, context)
     },
     survey: async (root, args, context) => {
-      return await read.survey(args, context)
+      let res = await read.survey(args, context)
+      console.log(res)
+      return res
     },
     media: async (root, args, context) => {
       return await read.media(args, context)
@@ -26,7 +28,9 @@ module.exports = {
       return await read.answer(args, context)
     },
     question: async (root, args, context) => {
-      return await read.question(args, context)
+      let res = await read.question(args, context)
+      console.log(res)
+      return res
     }
   },
 
@@ -86,7 +90,7 @@ module.exports = {
 
   Answer: {
     question: async (original, args={}, context) => {
-      return await read.source({ ...args, _id: original.question }, context)
+      return await read.question({ ...args, _id: original.question }, context)
     },
     response: async (original, args={}, context) => {
       return await read.response({ ...args, _id: original.response }, context)

@@ -6,7 +6,7 @@ exports.response = async (args, user) => {
   // populate associations
   await models.Answer.updateMany({ _id: { $in: args.answer } }, { $set: { response: document._id } })
   await models.SurveyInstance.update({ _id: args.survey_instance }, { $addToSet: { response: document._id } })
-  await models.SueveyInstance.update({ _id: args.survey_instance }, { $addToSet: { user } })
+  await models.SurveyInstance.update({ _id: args.survey_instance }, { $addToSet: { user } })
   await models.User.update({ _id: user }, { $addToSet: { survey_instance: args.survey_instance } })
 
   return document._id
