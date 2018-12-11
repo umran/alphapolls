@@ -3,12 +3,10 @@ const read = require('../database').read
 const constants = require('../constants')
 const mongoose = require('mongoose')
 
-const limitAccess = (method, response) => {
-  if (constants.adminMethods.indexOf(method)) {
+const limitAccess = (method) => {
+  if (constants.adminMethods.indexOf(`create_${method}`) > -1) {
     throw new Error('insufficient privileges to perform action')
   }
-
-  return response
 }
 
 Object.keys(create).forEach(method => {
@@ -47,11 +45,12 @@ Object.keys(create).forEach(method => {
       }
     }
 
+    console.log(context)
+
     if (context.clearance !== 'admin') {
-      return limitAccess(method, await create[method](args, context.user))
+      limitAccess(method)
     }
 
     return await create[method](args, context.user)
-
   }
 })

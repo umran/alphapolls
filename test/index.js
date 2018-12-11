@@ -24,7 +24,7 @@ const app = express()
 app.use('/some-optional-custom-endpoint', (req, res, next) => {
   req.session = {
     clearance: 'admin',
-    user: 'admin'
+    user: 'some admin id'
   }
 
   next()
