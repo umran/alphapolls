@@ -79,6 +79,7 @@ exports.Response = mongoose.model('Response', Schema({
 exports.User = mongoose.model('User', Schema({
   auth_provider: { type: String, enum: ['Twitter'], required: true },
   auth_token: { type: String, required: true },
+  clearance: { type: String, enum: ['user', 'admin'], required: true },
   date_created: { type: Date, required: true, default: new Date() },
   date_modified: { type: Date, required: true, default: new Date() },
   // associations

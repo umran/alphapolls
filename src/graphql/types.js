@@ -64,7 +64,7 @@ module.exports = gql`
     date_created: String!
     date_modified: String!
     response(_id: String, date_created: String, date_modified: String, answer: [String]): [Response]
-    user(_id: String, auth_provider: String, auth_token: String): [User]
+    user(_id: String, auth_provider: String, auth_token: String, clearance: String): [User]
   }
 
   type Response {
@@ -79,13 +79,14 @@ module.exports = gql`
     _id: String!
     auth_provider: String!
     auth_token: String!
+    clearance: String!
     date_created: String!
     date_modified: String!
     survey_instance(_id: String, survey: String, start_date: String, end_date: String, date_created: String, date_modified: String): [SurveyInstance]
   }
 
   type Query {
-    user(_id: String, auth_provider: String, auth_token: String, survey_instance: [String]): [User]
+    user(_id: String, auth_provider: String, auth_token: String, clearance: String, survey_instance: [String]): [User]
     response(_id: String, survey_instance: String, date_created: String, date_modified: String, answer: [String]): [Response]
     survey_instance(_id: String, survey: String, start_date: String, end_date: String, date_created: String, date_modified: String, response: [String], user: [String]): [SurveyInstance]
     survey(_id: String, name: String, date_created: String, date_modified: String, topic: [String], media: [String], question: [String], survey_instance: [String]): [Survey]
