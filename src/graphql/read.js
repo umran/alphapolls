@@ -69,7 +69,7 @@ Object.keys(read).forEach(key => {
     let raw
     if (context.clearance !== 'admin') {
       raw = await read[key](formattedArgs)
-      return redact(key, prepare(raw)))
+      return redact(key, prepare(raw))
     }
 
     raw = await read[key](formattedArgs)
