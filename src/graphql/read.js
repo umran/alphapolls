@@ -6,7 +6,7 @@ const prepare = responses => {
     response.date_created = response.date_created.toISOString()
     response.date_modified = response.date_modified.toISOString()
 
-    Object.keys(constants.objectIds).forEach(key => {
+    constants.objectIds.forEach(key => {
       if (response[key]) {
         if (Array.isArray(response[key])) {
           response[key] = response[key].map(item => {
