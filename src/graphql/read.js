@@ -3,8 +3,8 @@ const constants = require('../constants')
 
 const prepare = responses => {
   return responses.map(response => {
-    //response.date_created = response.date_created.toISOString()
-    //response.date_modified = response.date_modified.toISOString()
+    response.date_created = response.date_created.toISOString()
+    response.date_modified = response.date_modified.toISOString()
 
     constants.objectIds.forEach(key => {
       console.log(key)
@@ -66,10 +66,14 @@ Object.keys(read).forEach(key => {
   exports[key] = async (args, context) => {
     const formattedArgs = formatArgs(args)
 
+    let raw
     if (context.clearance !== 'admin') {
-      return redact(key, prepare(await read[key](formattedArgs)))
+      raw = await read[key](formattedArgs)
+      return redact(key, prepare(raw)))
     }
 
-    return prepare(await read[key](formattedArgs))
+    raw = await read[key](formattedArgs)
+
+    return prepare(raw)
   }
 })
