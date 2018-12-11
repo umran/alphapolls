@@ -2,8 +2,8 @@ const update = require('../database').update
 const constants = require('../constants')
 const mongoose = require('mongoose')
 
-const limitAccess = (method) => {
-  if (constants.adminMethods.indexOf(`update_${method}`)) {
+const limitAccess = (clearance, method) => {
+  if (clearance !== 'admin') {
     throw new Error('insufficient privileges to perform action')
   }
 }
@@ -34,9 +34,7 @@ Object.keys(update).forEach(method => {
       return agg
     }, {})
 
-    if (context.clearance !== 'admin') {
-      limitAccess(method)
-    }
+    limitAccess(clearance)
 
     return await update[method](formattedArgs, args._id)
   }

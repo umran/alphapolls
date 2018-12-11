@@ -13,7 +13,7 @@ The instance of ApolloServer exposed by alphapolls must be plugged-in to an exis
 ### Setting the Context
 In order to setup the API server a function must be provided that takes an express request object and returns a GraphQL context object. The request object should have a user property and clearance property already set by an authentication middleware.
 
-The clearance property of the context object must be set to one of 'admin' or 'user'. The user property of the context object, if the clearance property is set to user, must be set to the \_id of the authenticated user as in the User model. If the clearance property is set to 'admin', the user property may be set to anything.
+The clearance property of the context object must be set to one of 'admin', 'user' or 'public'. The user property of the context object, if the clearance property is set to 'user', must be set to the \_id of the authenticated user as in the User model. If the clearance property is set to 'admin' or 'public', the user property may be set to anything.
 
 ```javascript
 const setContext = req => {
