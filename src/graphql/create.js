@@ -15,6 +15,10 @@ const limitAccess = (clearance, method) => {
   }
 }
 
+const prepare = response => {
+  return response.toString()
+}
+
 Object.keys(create).forEach(method => {
   exports[method] = async (args, context) => {
 
@@ -54,6 +58,6 @@ Object.keys(create).forEach(method => {
 
     limitAccess(context.clearance, method)
 
-    return await create[method](args, context.user)
+    return prepare(await create[method](args, context.user))
   }
 })

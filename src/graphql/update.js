@@ -8,6 +8,10 @@ const limitAccess = (clearance, method) => {
   }
 }
 
+const prepare = response => {
+  return response.toString()
+}
+
 Object.keys(update).forEach(method => {
   exports[method] = async (args, context) => {
     if (method === 'question' && args.input_type && args.input_type === 'Number') {
@@ -36,6 +40,6 @@ Object.keys(update).forEach(method => {
 
     limitAccess(clearance)
 
-    return await update[method](formattedArgs, args._id)
+    return prepare(await update[method](formattedArgs, args._id))
   }
 })
