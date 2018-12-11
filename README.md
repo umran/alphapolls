@@ -16,7 +16,7 @@ In order to setup the API server a function must be provided that takes an expre
 The clearance property of the context object must be set to one of 'admin' or 'user'. The user property of the context object, if the clearance property is set to user, must be set to the \_id of the authenticated user as in the User model. If the clearance property is set to 'admin', the user property may be set to anything.
 
 ```javascript
-const setContext = (req) => {
+const setContext = req => {
   if (!req.session) {
     throw new Error('a session must be set')
   }
