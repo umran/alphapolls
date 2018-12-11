@@ -2,7 +2,7 @@ const read = require('../database').read
 const constants = require('../constants')
 
 const prepare = responses => {
-  return responses.map(resp => {
+  return responses.map(response => {
     response.date_created = response.date_created.toISOString()
     response.date_modified = response.date_modified.toISOString()
 
