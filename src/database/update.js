@@ -37,21 +37,21 @@ exports.response = async (args, _id) => {
     const answerDiff = listDiff(args.answer, document.answer)
 
     if (answerDiff.toDelete.length > 0) {
-      await models.Answer.update({ _id: { $in: answerDiff.toDelete } }, { $unset: { response: '' } })
+      await models.Answer.updateMany({ _id: { $in: answerDiff.toDelete } }, { $unset: { response: '' } })
     }
 
     if (answerDiff.toAdd.length > 0) {
-      await models.Answer.update({ _id: { $in: answerDiff.toAdd } }, { $set: { response: _id } })
+      await models.Answer.updateMany({ _id: { $in: answerDiff.toAdd } }, { $set: { response: _id } })
     }
   } else if (args.answer) {
-    await models.Answer.update({ _id: { $in: args.answer } }, { $set: { response: _id } })
+    await models.Answer.updateMany({ _id: { $in: args.answer } }, { $set: { response: _id } })
   }
 
   if (args.survey_instance && document.survey_instance && args.survey_instance !== document.survey_instance.toString()) {
-    await models.SurveyInstance.update({ _id: document.survey_instance }, { $pull: { response: _id }  })
-    await models.SurveyInstance.update({ _id: args.survey_instance }, { $addToSet: { response: _id } })
+    await models.SurveyInstance.updateOne({ _id: document.survey_instance }, { $pull: { response: _id }  })
+    await models.SurveyInstance.updateOne({ _id: args.survey_instance }, { $addToSet: { response: _id } })
   } else if (args.survey_instance) {
-    await models.SurveyInstance.update({ _id: args.survey_instance }, { $addToSet: { response: _id } })
+    await models.SurveyInstance.updateOne({ _id: args.survey_instance }, { $addToSet: { response: _id } })
   }
 
   return document._id
@@ -61,10 +61,10 @@ exports.survey_instance = async (args, _id) => {
   let document = await models.SurveyInstance.findOneAndUpdate({ _id }, args, updateSettings)
 
   if (args.survey && document.survey && args.survey !== document.survey.toString()) {
-    await models.Survey.update({ _id: document.survey }, { $pull: { survey_instance: _id }  })
-    await models.Survey.update({ _id: args.survey }, { $addToSet: { survey_instance: _id } })
+    await models.Survey.updateOne({ _id: document.survey }, { $pull: { survey_instance: _id }  })
+    await models.Survey.updateOne({ _id: args.survey }, { $addToSet: { survey_instance: _id } })
   } else if (args.survey) {
-    await models.Survey.update({ _id: args.survey }, { $addToSet: { survey_instance: _id } })
+    await models.Survey.updateOne({ _id: args.survey }, { $addToSet: { survey_instance: _id } })
   }
 
   return document._id
@@ -113,10 +113,10 @@ exports.media = async (args, _id) => {
   // populate associations
   // handle case where associated source has changed
   if (args.source && document.source && args.source !== document.source.toString()) {
-    await models.Source.update({ _id: document.source }, { $pull: { media: _id }  })
-    await models.Source.update({ _id: args.source }, { $addToSet: { media: _id } })
+    await models.Source.updateOne({ _id: document.source }, { $pull: { media: _id }  })
+    await models.Source.updateOne({ _id: args.source }, { $addToSet: { media: _id } })
   } else if (args.source) {
-    await models.Source.update({ _id: args.source }, { $addToSet: { media: _id } })
+    await models.Source.updateOne({ _id: args.source }, { $addToSet: { media: _id } })
   }
 
   return document._id
@@ -134,10 +134,10 @@ exports.answer = async (args, _id) => {
   // populate associations
   // handle case where associated question has changed
   if (args.question && document.question && args.question !== document.question.toString()) {
-    await models.Question.update({ _id: document.question }, { $pull: { answer: _id }  })
-    await models.Question.update({ _id: args.question }, { $addToSet: { answer: _id } })
+    await models.Question.updateOne({ _id: document.question }, { $pull: { answer: _id }  })
+    await models.Question.updateOne({ _id: args.question }, { $addToSet: { answer: _id } })
   } else if (args.question) {
-    await models.Question.update({ _id: args.question }, { $addToSet: { answer: _id } })
+    await models.Question.updateOne({ _id: args.question }, { $addToSet: { answer: _id } })
   }
 
   return document._id
