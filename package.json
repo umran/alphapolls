@@ -21,11 +21,11 @@
   },
   "homepage": "https://github.com/umran/alphapolls#readme",
   "dependencies": {
-    "apollo-server-express": "^2.2.6",
+    "apollo-server-express": "^2.3.1",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "graphql": "^14.0.2",
-    "mongoose": "^5.3.14"
+    "mongoose": "^5.3.16"
   }
 }

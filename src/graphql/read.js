@@ -12,7 +12,7 @@ const prepare = responses => {
     }
 
     if (response.end_date) {
-      response.start_date = response.end_date.toISOString()
+      response.end_date = response.end_date.toISOString()
     }
 
     if (response.value) {
