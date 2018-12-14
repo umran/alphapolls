@@ -33,6 +33,10 @@ const listDiff = (current, old) => {
 exports.response = async (args, _id) => {
   let document = await models.Response.findOneAndUpdate({ _id }, args, updateSettings)
 
+  if (!document) {
+    throw new Error('the resource does not exist')
+  }
+
   if (args.answer && document.answer) {
     const answerDiff = listDiff(args.answer, document.answer)
 
@@ -60,6 +64,10 @@ exports.response = async (args, _id) => {
 exports.survey_instance = async (args, _id) => {
   let document = await models.SurveyInstance.findOneAndUpdate({ _id }, args, updateSettings)
 
+  if (!document) {
+    throw new Error('the resource does not exist')
+  }
+
   if (args.survey && document.survey && args.survey !== document.survey.toString()) {
     await models.Survey.updateOne({ _id: document.survey }, { $pull: { survey_instance: _id }  })
     await models.Survey.updateOne({ _id: args.survey }, { $addToSet: { survey_instance: _id } })
@@ -72,6 +80,10 @@ exports.survey_instance = async (args, _id) => {
 
 exports.survey = async (args, _id) => {
   let document = await models.Survey.findOneAndUpdate({ _id }, args, updateSettings)
+
+  if (!document) {
+    throw new Error('the resource does not exist')
+  }
 
   // populate associations
   // handle case where the list of questions has changed
@@ -110,6 +122,10 @@ exports.survey = async (args, _id) => {
 exports.media = async (args, _id) => {
   let document = await models.Media.findOneAndUpdate({ _id }, args, updateSettings)
 
+  if (!document) {
+    throw new Error('the resource does not exist')
+  }
+
   // populate associations
   // handle case where associated source has changed
   if (args.source && document.source && args.source !== document.source.toString()) {
@@ -125,11 +141,19 @@ exports.media = async (args, _id) => {
 exports.source = async (args, _id) => {
   let document = await models.Source.findOneAndUpdate({ _id }, args, updateSettings)
 
+  if (!document) {
+    throw new Error('the resource does not exist')
+  }
+
   return document._id
 }
 
 exports.answer = async (args, _id) => {
   let document = await models.Answer.findOneAndUpdate({ _id }, args, updateSettings)
+
+  if (!document) {
+    throw new Error('the resource does not exist')
+  }
 
   // populate associations
   // handle case where associated question has changed
@@ -145,6 +169,10 @@ exports.answer = async (args, _id) => {
 
 exports.question = async (args, _id) => {
   let document = await models.Question.findOneAndUpdate({ _id }, args, updateSettings)
+
+  if (!document) {
+    throw new Error('the resource does not exist')
+  }
 
   return document._id
 }
