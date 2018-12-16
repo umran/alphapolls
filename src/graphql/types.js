@@ -85,15 +85,26 @@ module.exports = gql`
     survey_instance(_id: String, survey: String, start_date: String, end_date: String, date_created: String, date_modified: String): [SurveyInstance]
   }
 
+  input Expression {
+    type: String!
+    operator: String!
+    value: String!
+  }
+
+  input Filter {
+    field: String!
+    expression: [Expression!]!
+  }
+
   type Query {
-    user(_id: String, auth_provider: String, auth_token: String, clearance: String, survey_instance: [String]): [User]
-    response(_id: String, survey_instance: String, date_created: String, date_modified: String, answer: [String]): [Response]
-    survey_instance(_id: String, survey: String, start_date: String, end_date: String, date_created: String, date_modified: String, response: [String], user: [String]): [SurveyInstance]
-    survey(_id: String, name: String, date_created: String, date_modified: String, topic: [String], media: [String], question: [String], survey_instance: [String]): [Survey]
-    media(_id: String, uri: String, title: String, content: String, source: String, date_created: String, date_modified: String, survey: [String]): [Media]
-    source(_id: String, name: String, website: String, date_created: String, date_modified: String, media: [String]): [Source]
-    answer(_id: String, question: String, value: String, date_created: String, date_modified: String, response: String): [Answer]
-    question(_id: String, value: String, input_type: String, data_type: String, input_minimum: Float, input_maximum: Float, allow_arbitrary: Boolean, date_created: String, date_modified: String, choice: [String], answer: [String], survey: [String]): [Question]
+    user(_id: String, auth_provider: String, auth_token: String, clearance: String, survey_instance: [String], filter: [Filter], limit: Int, cursor: String): [User]
+    response(_id: String, survey_instance: String, date_created: String, date_modified: String, answer: [String], filter: [Filter], limit: Int, cursor: String): [Response]
+    survey_instance(_id: String, survey: String, start_date: String, end_date: String, date_created: String, date_modified: String, response: [String], user: [String], filter: [Filter], limit: Int, cursor: String): [SurveyInstance]
+    survey(_id: String, name: String, date_created: String, date_modified: String, topic: [String], media: [String], question: [String], survey_instance: [String], filter: [Filter], limit: Int, cursor: String): [Survey]
+    media(_id: String, uri: String, title: String, content: String, source: String, date_created: String, date_modified: String, survey: [String], filter: [Filter], limit: Int, cursor: String): [Media]
+    source(_id: String, name: String, website: String, date_created: String, date_modified: String, media: [String], filter: [Filter], limit: Int, cursor: String): [Source]
+    answer(_id: String, question: String, value: String, date_created: String, date_modified: String, response: String, filter: [Filter], limit: Int, cursor: String): [Answer]
+    question(_id: String, value: String, input_type: String, data_type: String, input_minimum: Float, input_maximum: Float, allow_arbitrary: Boolean, date_created: String, date_modified: String, choice: [String], answer: [String], survey: [String], filter: [Filter], limit: Int, cursor: String): [Question]
   }
 
   type Mutation {

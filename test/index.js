@@ -35,7 +35,7 @@ const initDb = function() {
 const setContext = req => {
   return {
     clearance: 'admin',
-    user: '5c101d2275866c42526fb639'
+    user: '5c101d2275866c42526fc639'
   }
 }
 

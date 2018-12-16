@@ -31,13 +31,13 @@ Object.keys(create).forEach(method => {
       }
 
       if (survey_instance[0].user) {
-        if (survey_instance[0].user.indexOf(context.user)) {
+        if (survey_instance[0].user.map(user => user.toString()).indexOf(context.user) > -1) {
           throw new Error('the user has already submitted a response to this survey instance')
         }
       }
 
       // make sure no answer is associated with another response
-      let answers = await read.answer({ primary: { _id: $in: { args.answer } } })
+      let answers = await read.answer({ primary: { _id: { $in: args.answer } } })
       if (!answers || answers.length === 0) {
         throw new Error('none of the answers specified exist')
       }
@@ -48,18 +48,25 @@ Object.keys(create).forEach(method => {
           throw new Error('at least one of the answers specified is already associated with another response')
         }
 
-        addressedQuestions.push(answers[i].question)
+        addressedQuestions.push(answers[i].question.toString())
       }
 
       addressedQuestions.sort()
 
       // make sure answers address the right questions
-      let survey = await read.survey({ primary: { _id: survey_instance.survey } })
+      let survey = await read.survey({ primary: { _id: survey_instance[0].survey } })
       if (!survey || survey.length === 0) {
         throw new Error('the specified survey does not exist')
       }
 
       let surveyQuestions = survey[0].question.map(question => question.toString()).sort()
+
+      // debug
+      console.log(answers.length)
+      console.log("surveyQuestions:")
+      console.log(surveyQuestions)
+      console.log("addressedQuestions:")
+      console.log(addressedQuestions)
 
       if (addressedQuestions.length !== surveyQuestions.length) {
         throw new Error('the addressed questions are not equivalent to the survey questions')

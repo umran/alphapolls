@@ -10,8 +10,9 @@ exports.objectIds = [
 ]
 
 exports.secondaryArgs = [
+  'filter',
   'limit',
-  'sort'
+  'cursor'
 ]
 
 exports.adminMethods = [

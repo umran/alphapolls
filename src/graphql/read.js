@@ -41,7 +41,7 @@ const formatArray = (value) => {
   let out
   if (Array.isArray(value)) {
     out = {
-      $in: value
+      $all: value
     }
   } else {
     out = value
